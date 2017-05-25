@@ -1,0 +1,54 @@
+---
+# tasks file for .
+
+#looks like we need some packages for vagrant?
+- name: Install packages
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - cifs-utils
+    - libselinux-python
+
+- name: configure Vagrant .ssh directory
+  file:
+    path: /home/vagrant/.ssh
+    state: directory
+    owner: vagrant
+    group: vagrant
+    mode: 0700
+
+- name: Ensure Vagrant's public key is correct
+  get_url:
+    url: https://github.com/mitchellh/vagrant/raw/master/keys/vagrant.pub
+    dest: /home/vagrant/.ssh/authorized_keys
+    owner: vagrant
+    group: vagrant
+    mode: 0600
+
+- name: Remove unneeded packages.
+  package:
+    name: "{{ item }}"
+    state: absent
+  with_items:
+    - kernel-devel
+    - kernel-headers
+    - cpp
+
+- name: Clean up yum
+  command: yum clean all
+
+- name: Remove any remnants of VirtualBox ISOs
+  shell: rm -rf VBoxAdditions_*.iso VBoxAdditions_*.iso.?
+
+- name: Remove RedHat persistence
+  shell: rm -rf /etc/udev/rules.d/70-persistent-net.rules
+
+- name: Remove interface persistence
+  lineinfile:
+    dest: /etc/sysconfig/network-scripts/ifcfg-eth0
+    regexp: "{{item}}"
+    state: absent
+  with_items:
+    - '^HWADDR'
+    - '^UUID'
