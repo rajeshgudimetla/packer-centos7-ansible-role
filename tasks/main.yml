@@ -3,6 +3,7 @@
 
 #looks like we need some packages for vagrant?
 - name: Install packages
+  become: true
   package:
     name: "{{ item }}"
     state: present
@@ -11,6 +12,7 @@
     - libselinux-python
 
 - name: configure Vagrant .ssh directory
+  become: true
   file:
     path: /home/vagrant/.ssh
     state: directory
@@ -19,6 +21,7 @@
     mode: 0700
 
 - name: Ensure Vagrant's public key is correct
+  become: true
   get_url:
     url: https://github.com/mitchellh/vagrant/raw/master/keys/vagrant.pub
     dest: /home/vagrant/.ssh/authorized_keys
@@ -27,6 +30,7 @@
     mode: 0600
 
 - name: Remove unneeded packages.
+  become: true
   package:
     name: "{{ item }}"
     state: absent
@@ -36,15 +40,18 @@
     - cpp
 
 - name: Clean up yum
+  become: true
   command: yum clean all
 
 - name: Remove any remnants of VirtualBox ISOs
   shell: rm -rf VBoxAdditions_*.iso VBoxAdditions_*.iso.?
 
 - name: Remove RedHat persistence
+  become: true
   shell: rm -rf /etc/udev/rules.d/70-persistent-net.rules
 
 - name: Remove interface persistence
+  become: true
   lineinfile:
     dest: /etc/sysconfig/network-scripts/ifcfg-eth0
     regexp: "{{item}}"
