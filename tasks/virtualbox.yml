@@ -4,6 +4,7 @@
   register: virtualbox_version
 
 - name: Mount VirtualBox guest ISO
+  become: true
   mount:
     name: /tmp/vbox
     src: "/home/vagrant/VBoxGuestAdditions_{{virtualbox_version.stdout}}.iso"
@@ -12,10 +13,12 @@
     fstype: iso9660
 
 - name: Run VirtualBox guest addtions install
+  become: true
   shell: sh /tmp/vbox/VBoxLinuxAdditions.run
   failed_when: false
 
 - name: Umount VirtualBox guest additions ISO.
+  become: true
   mount:
     name: /tmp/vbox
     src: "/home/vagrant/VBoxGuestAdditions_{{virtualbox_version.stdout}}.iso"
