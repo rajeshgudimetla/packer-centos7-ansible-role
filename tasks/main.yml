@@ -29,6 +29,13 @@
     group: vagrant
     mode: 0600
 
+- name: Check if VIrutalBox is running the guest VM.
+  state: path=/home/vagrant/.vbox_version
+  register: virtualbox_check
+
+- include: virtualbox.yml
+  when: virtualbox_check.stat.exists
+  
 - name: Remove unneeded packages.
   become: true
   package:
