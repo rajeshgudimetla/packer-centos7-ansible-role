@@ -26,7 +26,7 @@
 
 - name: Run VirtualBox guest addtions install
   become: true
-  shell: sh /tmp/vbox/VBoxLinuxAdditions.run install
+  shell: sh /tmp/vbox/VBoxLinuxAdditions.run install --force 
   failed_when: false
 
 - name: Umount VirtualBox guest additions ISO.
