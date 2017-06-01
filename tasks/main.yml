@@ -10,6 +10,10 @@
   with_items:
     - cifs-utils
     - libselinux-python
+    - kernel-headers
+    - kerenl-devel
+    - gcc
+    - cpp
 
 - name: configure Vagrant .ssh directory
   become: true
@@ -56,6 +60,7 @@
     - kernel-devel
     - kernel-headers
     - cpp
+    - gcc
 
 - name: Clean up yum
   become: true
