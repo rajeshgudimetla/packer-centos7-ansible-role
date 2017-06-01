@@ -3,6 +3,18 @@
   shell: cat /home/vagrant/.vbox_version
   register: virtualbox_version
 
+- name: Install bzip2
+  become: true
+  yum:
+    name: bzip2
+    state: present
+
+- name: Ensure /tmp/vbox exists
+  become: true
+  file:
+    name: /tmp/vbox
+    state: directory
+
 - name: Mount VirtualBox guest ISO
   become: true
   mount:
@@ -14,7 +26,7 @@
 
 - name: Run VirtualBox guest addtions install
   become: true
-  shell: sh /tmp/vbox/VBoxLinuxAdditions.run
+  shell: sh /tmp/vbox/VBoxLinuxAdditions.run install
   failed_when: false
 
 - name: Umount VirtualBox guest additions ISO.
