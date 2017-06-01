@@ -11,7 +11,7 @@
     - cifs-utils
     - libselinux-python
     - kernel-headers
-    - kerenl-devel
+    - kernel-devel
     - gcc
     - cpp
 
