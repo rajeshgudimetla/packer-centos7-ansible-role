@@ -25,8 +25,3 @@
     opts: loop
     state: absent
     fstype: iso9660
-
-- name: Delete VirtualBox guest additions ISO
-  file:
-    path: "/home/vagrant/VBoxGuestAdditions_{{virtualbox_version.stdout}}.iso"
-    state: absent

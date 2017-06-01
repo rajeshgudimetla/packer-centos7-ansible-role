@@ -37,7 +37,7 @@
   when: virtualbox_check.stat.exists
 
 # Vmware tools installation
-- name: Check iv VMware is running the guest VM
+- name: Check if VMware is running the guest VM
   shell: "cat /proc/scsi/scsi | grep VMware"
   changed_when: false
   failed_when: false
@@ -60,9 +60,6 @@
 - name: Clean up yum
   become: true
   command: yum clean all
-
-- name: Remove any remnants of VirtualBox ISOs
-  shell: rm -rf VBoxAdditions_*.iso VBoxAdditions_*.iso.?
 
 - name: Remove RedHat persistence
   become: true
