@@ -1,5 +1,9 @@
 ---
 # tasks file for .
+- name: Get the current kernel release.
+  command: uname -r
+  changed_when: false
+  register: kernel_release
 
 #looks like we need some packages for vagrant?
 - name: Install packages
@@ -8,12 +12,17 @@
     name: "{{ item }}"
     state: present
   with_items:
-    - cifs-utils
-    - libselinux-python
+    - wget
+    - perl
+    - cpp
+    - gcc
+    - make
+    - bzip2
     - kernel-headers
     - kernel-devel
-    - gcc
-    - cpp
+    - "kernel-devel-{{ kernel_release.stdout }}"
+    - libselinux-python
+    - cifs-utils
 
 - name: configure Vagrant .ssh directory
   become: true
