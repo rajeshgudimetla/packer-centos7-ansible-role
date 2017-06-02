@@ -1,10 +1,12 @@
 ---
 - name: Add VMware tools repistory.
+  become: true
   template:
     src: vmware-tools.repo.j2
     dest: /etc/yum.repos.d/vmware-tools.repo
 
 - name: Import VMware tools GPG keys 
+  become: true
   rpm_key:
     key: "{{ item }}"
     state: present
@@ -13,11 +15,13 @@
     - "http://packages.vmware.com/tools/keys/VMWARE-PACKAGING-GPG-RSA-KEY.pub"
 
 - name: Install open-vm-tools.
+  become: true
   yum: "name={{ item }} state=present"
   with_items:
     - open-vm-tools
 
 - name: Create temporary directories for VMware tools.
+  become: true
   file:
     path: "/tmp/{{ item }}"
     state: directory
@@ -29,7 +33,8 @@
   register: vaglist
 - debug: var=vaglist
 
-- name: Mount VMware tools.
+- name: Mount VMware tools
+  become: true
   mount:
     name: /tmp/vmfusion
     src: /home/vagrant/linux.iso
@@ -38,12 +43,15 @@
     state: mounted
 
 - name: Decompress VMware Tools installer into archive folder.
+  become: true
   shell: tar xzf /tmp/vmfusion/VMwareTools-*.tar.gz -C /tmp/vmfusion-archive
 
 - name: Run the VMware tools installer.
+  become: true
   shell: /tmp/vmfusion-archive/vmware-tools-distrib/vmware-install.pl --default
 
 - name: Unmount VMware tools.
+  become: true
   mount:
     name: /tmp/vmfusion
     src: /home/vagrant/linux.iso
@@ -51,6 +59,7 @@
     state: absent
 
 - name: Remove temporary directories for VMware tools.
+  become: true
   file:
     path: "/tmp/{{ item }}"
     state: absent
