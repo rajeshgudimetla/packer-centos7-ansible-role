@@ -31,3 +31,13 @@
     opts: loop
     state: absent
     fstype: iso9660
+
+- name: Remove /tmp/vbox mount point
+  file:
+    name: /tmp/vbox
+    state: absent
+
+- name: Remove VirtualBox Guest Additions ISO
+  file:
+    name: "/home/vagrant/VBoxGuestAdditions_{{ virtualbox_version.stdout }}.iso"
+    state: absent
